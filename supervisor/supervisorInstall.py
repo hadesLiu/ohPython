@@ -46,8 +46,10 @@ def onboot_supervisor():
     subprocess.Popen('/etc/init.d/supervisord start',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
 def check_supervisord_yum():
-    values = subprocess.Popen('ps -ef |grep "/usr/bin/python /usr/bin/supervisord" |grep -v grep',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    if values is not None:
+    # values = subprocess.Popen('ps -ef |grep "/usr/bin/python /usr/bin/supervisord" |grep -v grep',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    values = os.popen('ps -ef |grep "/usr/bin/python /usr/bin/supervisord" |grep -v "grep" ')
+    values = values.readlines()
+    if len(values) and 'supervisord' in values[1]:
         subprocess.Popen('/etc/init.d/supervisord stop',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         print("supervisord is stopped.")
 
