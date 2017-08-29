@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # author: hiro
 import configparser
+#import ConfigParser
 import os
 import subprocess
 
@@ -22,7 +23,8 @@ def install_supervisor():
                 sv.write(line)
 
     # make supervisord.conf.d
-    subprocess.Popen('mkdir /etc/supervisord.conf.d',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    #subprocess.Popen('mkdir /etc/supervisord.conf.d',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    os.popen('mkdir /etc/supervisord.conf.d')
 
 def config_supervisor_salt(configFilePath):
     # create salt-minion.ini
@@ -31,14 +33,14 @@ def config_supervisor_salt(configFilePath):
 
         with open('salt-minion.ini', 'r') as sm1:
             for line in sm1:
-                sm1.write(line)
+                sm.write(line)
 
 def onboot_supervisor():
     # create /etc/init.d/supervisord
     with open('/etc/init.d/supervisord', 'w') as sm:
         with open('supervisord', 'r') as sm1:
             for line in sm1:
-                sm1.write(line)
+                sm.write(line)
 
     # onboot and start supervisord
     subprocess.Popen('chmod +x /etc/init.d/supervisord',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -56,10 +58,12 @@ def check_supervisord_yum():
         print("supervisord is stopped.")
 
 def parse_supervisor_config_file():
-    cf = configparser.ConfigParser()
+    #cf = configparser.ConfigParser()
+    cf = ConfigParser.ConfigParser()
     cf.read('/etc/supervisord.conf')
 
-    configFilePath= cf.get('include', 'files')
+    configFilePath = cf.get('include', 'files')
+    configFilePath = os.path.dirname(configFilePath)
     # if configFilePath == '/etc/supervisord.conf.d/*.ini':
     if configFilePath is not None:
         config_supervisor_salt(configFilePath)
@@ -74,6 +78,7 @@ if __name__ == "__main__":
         check_supervisord_yum()
     elif os.path.isfile('/etc/supervisord.conf'):
         parse_supervisor_config_file()
+        onboot_supervisor()
     else:
         install_supervisor()
         config_supervisor_salt('/etc/supervisord.conf.d')
