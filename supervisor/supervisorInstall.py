@@ -11,7 +11,9 @@ def install_supervisor():
     kill_process_by_name('salt-minion')
 
     # install supervisor
-    subprocess.Popen('/application/python/bin/easy_install supervisor',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    # subprocess.Popen('/application/python/bin/easy_install supervisor',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    values = os.popen('/application/python/bin/easy_install supervisor')
+    print(values.readlines())
 
     # generate supervisord.conf
     with open('/etc/supervisord.conf', 'w') as sv:
@@ -49,7 +51,7 @@ def check_supervisord_yum():
     # values = subprocess.Popen('ps -ef |grep "/usr/bin/python /usr/bin/supervisord" |grep -v grep',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     values = os.popen('ps -ef |grep "/usr/bin/python /usr/bin/supervisord" |grep -v "grep" ')
     values = values.readlines()
-    if len(values) and 'supervisord' in values[1]:
+    if len(values) and 'supervisord' in values[0]:
         subprocess.Popen('/etc/init.d/supervisord stop',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         print("supervisord is stopped.")
 
@@ -76,3 +78,4 @@ if __name__ == "__main__":
         install_supervisor()
         config_supervisor_salt('/etc/supervisord.conf.d')
         onboot_supervisor()
+
