@@ -54,7 +54,7 @@ def check_supervisord_yum():
     values = os.popen('ps -ef |grep "/usr/bin/python /usr/bin/supervisord" |grep -v "grep" ')
     values = values.readlines()
     if len(values) and 'supervisord' in values[0]:
-        subprocess.Popen('/etc/init.d/supervisord stop',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        subprocess.Popen('sudo /etc/init.d/supervisord stop',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         print("supervisord is stopped.")
 
 def parse_supervisor_config_file():
