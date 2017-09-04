@@ -77,6 +77,7 @@ if __name__ == "__main__":
     if os.path.isfile('/etc/init.d/supervisord'):
         check_supervisord_yum()
     elif os.path.isfile('/etc/supervisord.conf'):
+        kill_process_by_name('salt-minion')
         parse_supervisor_config_file()
         onboot_supervisor()
     else:
