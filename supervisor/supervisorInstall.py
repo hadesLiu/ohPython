@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # author: hiro
-import configparser
-#import ConfigParser
+#import configparser
+import ConfigParser
 import os
 import subprocess
 
