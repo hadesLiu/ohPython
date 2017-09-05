@@ -7,6 +7,8 @@ import subprocess
 
 from kill_process_by_name import kill_process_by_name
 
+curDir = '/tmp/ohPython/supervisor'
+
 def install_supervisor():
     # kill old salt-minion
     kill_process_by_name('salt-minion')
@@ -18,7 +20,7 @@ def install_supervisor():
 
     # generate supervisord.conf
     with open('/etc/supervisord.conf', 'w') as sv:
-        with open('supervisord.conf', 'r') as sv1:
+        with open('%s/supervisord.conf' % curDir, 'r') as sv1:
             for line in sv1:
                 sv.write(line)
 
@@ -31,14 +33,14 @@ def config_supervisor_salt(configFilePath):
     # with open('/etc/supervisord.conf.d/salt-minion.ini', 'w') as sm:
     with open('%s/salt-minion.ini' % configFilePath, 'w') as sm:
 
-        with open('salt-minion.ini', 'r') as sm1:
+        with open('%s/salt-minion.ini' % curDir, 'r') as sm1:
             for line in sm1:
                 sm.write(line)
 
 def onboot_supervisor():
     # create /etc/init.d/supervisord
     with open('/etc/init.d/supervisord', 'w') as sm:
-        with open('supervisord', 'r') as sm1:
+        with open('%s/supervisord' % curDir, 'r') as sm1:
             for line in sm1:
                 sm.write(line)
 
@@ -59,7 +61,9 @@ def check_supervisord_yum():
     values = os.popen('ps -ef |grep "/usr/bin/python /usr/bin/supervisord" |grep -v "grep" ')
     values = values.readlines()
     if len(values) and 'supervisord' in values[0]:
-        subprocess.Popen('sudo /etc/init.d/supervisord stop',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        values = subprocess.Popen('sudo /etc/init.d/supervisord stop',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        print(values.stdout.readline())
+        print(values.stderr.readline())
         print("supervisord is stopped.")
 
 def parse_supervisor_config_file():
