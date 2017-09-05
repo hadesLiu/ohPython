@@ -88,7 +88,6 @@ if __name__ == "__main__":
         parse_supervisor_config_file()
         onboot_supervisor()
     else:
-        kill_process_by_name('salt-minion')
         install_supervisor()
         config_supervisor_salt('/etc/supervisord.conf.d')
         onboot_supervisor()
