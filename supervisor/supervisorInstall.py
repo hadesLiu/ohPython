@@ -43,11 +43,16 @@ def onboot_supervisor():
                 sm.write(line)
 
     # onboot and start supervisord
-    subprocess.Popen('chmod +x /etc/init.d/supervisord',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    subprocess.Popen('chkconfig --add supervisord',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    subprocess.Popen('chkconfig supervisord off',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    subprocess.Popen('chkconfig supervisord on',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    subprocess.Popen('/etc/init.d/supervisord start',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    values1 = subprocess.Popen('chmod +x /etc/init.d/supervisord',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    print(values1.stderr.readline())
+    values2 = subprocess.Popen('chkconfig --add supervisord',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    print(values2.stderr.readline())
+    values3 = subprocess.Popen('chkconfig supervisord off',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    print(values3.stderr.readline())
+    values4 = subprocess.Popen('chkconfig supervisord on',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    print(values4.stderr.readline())
+    values5 = subprocess.Popen('/etc/init.d/supervisord start',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    print(values5.stderr.readline())
 
 def check_supervisord_yum():
     # values = subprocess.Popen('ps -ef |grep "/usr/bin/python /usr/bin/supervisord" |grep -v grep',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -67,8 +72,10 @@ def parse_supervisor_config_file():
     # if configFilePath == '/etc/supervisord.conf.d/*.ini':
     if configFilePath is not None:
         config_supervisor_salt(configFilePath)
-        subprocess.Popen('/application/python/bin/supervisorctl reread',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        subprocess.Popen('/application/python/bin/supervisorctl update',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        values6 = subprocess.Popen('/application/python/bin/supervisorctl reread',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        print(values6.stderr.readline())
+        values7 = subprocess.Popen('/application/python/bin/supervisorctl update',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        print(values7.stderr.readline())
     else:
         print('supervisor config path is none.')
 
