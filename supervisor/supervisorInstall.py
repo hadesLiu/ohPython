@@ -90,6 +90,12 @@ if __name__ == "__main__":
     elif os.path.isfile('/etc/supervisord.conf'):
         kill_process_by_name('salt-minion')
         parse_supervisor_config_file()
+
+        values_super = os.popen('ps -ef |grep "/application/python/bin/python /application/python/bin/supervisord -c /etc/supervisord.conf" |grep -v "grep" ')
+        values_super = values_super.readlines()
+        if len(values_super):
+            kill_process_by_name('/application/python/bin/python /application/python/bin/supervisord -c /etc/supervisord.conf')
+
         onboot_supervisor()
     else:
         install_supervisor()
