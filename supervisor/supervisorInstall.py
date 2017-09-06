@@ -54,6 +54,7 @@ def onboot_supervisor():
     values4 = subprocess.Popen('chkconfig supervisord on',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     print(values4.stderr.readline())
     values5 = subprocess.Popen('/etc/init.d/supervisord start',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    print(values5.stdout.readline())
     print(values5.stderr.readline())
 
 def check_supervisord_yum():
