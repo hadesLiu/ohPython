@@ -94,7 +94,7 @@ if __name__ == "__main__":
         values_super = os.popen('ps -ef |grep "/application/python/bin/python /application/python/bin/supervisord -c /etc/supervisord.conf" |grep -v "grep" ')
         values_super = values_super.readlines()
         if len(values_super):
-            kill_process_by_name('/application/python/bin/python /application/python/bin/supervisord -c /etc/supervisord.conf')
+            kill_process_by_name('supervisord')
 
         onboot_supervisor()
     else:
