@@ -13,7 +13,8 @@ def kill_process_by_name(name):
        for line in txt:
            colum = line.split()
            pid = colum[0]
-           cmd = "kill -9 %d" % int(pid)
+           #cmd = "kill -9 %d" % int(pid)
+           cmd = "kill %d" % int(pid)
            rc = os.system(cmd)
            if rc == 0 :
                print("exec \"%s\" success!!" % cmd)
